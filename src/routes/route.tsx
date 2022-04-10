@@ -1,0 +1,24 @@
+import { useEffect, useState } from "react";
+interface IAppProps {
+  path: string;
+  children: any;
+}
+const Route = ({ path, children }: IAppProps) => {
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const onLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener("popstate", onLocationChange);
+
+    return () => {
+      window.removeEventListener("popstate", onLocationChange);
+    };
+  }, []);
+
+  return currentPath === path ? children : null;
+};
+
+export default Route;
